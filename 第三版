@@ -1,0 +1,287 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卤筷乐 · 臻品鉴赏</title>
+    <style>
+        /* 0. 防错机制 & 全局重置 */
+        body &gt; *:not(.container) { display: none !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+
+        /* 1. 字体与背景 */
+        body {
+            background-color: #2b0a0a;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* 2. 主容器：手机屏幕模拟 */
+        .container {
+            display: block !important;
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            /* 背景：深红丝绸质感 + 噪点纹理 */
+            background: 
+                linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+                linear-gradient(135deg, #640a0a 0%, #460505 100%);
+            padding: 40px 25px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            overflow: hidden;
+        }
+
+        /* 装饰：四角边框 */
+        .corner-border {
+            position: absolute;
+            top: 20px; left: 20px; right: 20px; bottom: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .corner-border::before, .corner-border::after {
+            content: ''; position: absolute; width: 20px; height: 20px;
+            border-color: #FFD700; border-style: solid; transition: all 0.3s;
+        }
+        .corner-border::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+        .corner-border::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+        /* 3. 头部设计 */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .brand-name {
+            font-family: "Songti SC", "SimSun", serif; /* 宋体，更具文化感 */
+            font-size: 3.2rem;
+            font-weight: 900;
+            /* 金色渐变字 */
+            background: linear-gradient(to bottom, #FFD700, #FDB931);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .invite-text {
+            font-size: 0.9rem;
+            color: #d4af37;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-top: 5px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            display: inline-block;
+            padding: 4px 10px;
+        }
+
+        /* 4. 内容板块 */
+        .section {
+            margin-bottom: 35px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* 标题样式 */
+        .section-title {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .section-title::before, .section-title::after {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #FFD700);
+            margin: 0 10px;
+        }
+        .section-title::after { background: linear-gradient(90deg, #FFD700, transparent); }
+
+        /* 文本排版 */
+        .text-block {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+        }
+        
+        .feature-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: baseline;
+        }
+        .feature-item:last-child { margin-bottom: 0; }
+        
+        .dot {
+            width: 6px; height: 6px;
+            background: #FFD700;
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 0 5px #FFD700;
+        }
+        
+        .item-title {
+            font-size: 1.05rem;
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .item-desc {
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        /* 5. 底部名片区 */
+        .footer-card {
+            margin-top: 40px;
+            text-align: center;
+            border: 1px dashed rgba(255, 215, 0, 0.4);
+            padding: 25px 15px;
+            border-radius: 4px;
+            position: relative;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .time-row {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        .highlight {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-left: 5px;
+        }
+        
+        .contact-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .contact-row {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .contact-row.big {
+            font-size: 1.2rem;
+            color: #FFD700;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+        
+        /* 底部装饰印章效果（可选） */
+        .seal {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgba(255,0,0,0.3);
+            border-radius: 50%;
+            color: rgba(255,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transform: rotate(-15deg);
+            pointer-events: none;
+            font-family: serif;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 装饰边框 -->
+        <div class="corner-border"></div>
+
+        <!-- 头部 LOGO -->
+        <div class="header">
+            <div class="brand-name">卤筷乐</div>
+            <div class="invite-text">品牌升级 · 诚邀品鉴</div>
+        </div>
+
+        <!-- 板块：升级赋能 -->
+        <div class="section">
+            <div class="section-title">全新升级 · 赋能</div>
+            <div class="text-block">
+                <div class="feature-item">
+                    <div class="dot"></div>
+                    <div>
+                        <div class="item-title">源头甄选 · 匠心手作</div>
+                        <div class="item-desc">拒绝半成品，坚持从源头优选食材。重磅推出<b>手擀面</b>与<b>草本炖汤</b>，还原食物本真鲜味。</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="dot"></div>
+                    <div>
+                        <div class="item-title">秘制热卤 · 鲜香入骨</div>
+                        <div class="item-desc">老卤慢煨，现卤现捞。全新热卤系列，每一口都是时间的味道。</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="dot"></div>
+                    <div>
+                        <div class="item-title">空间焕新 · 体验升级</div>
+                        <div class="item-desc">门店环境全面升级，高清菜单视觉呈现。不仅是美味，更是享受。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 板块：专人接待 -->
+        <div class="section">
+            <div class="section-title">专人接待 · 交流</div>
+            <div style="text-align: center; font-size: 0.9rem; color: #ddd; line-height: 1.8;">
+                提前预约，由店长亲自接待<br>
+                深度交流品牌升级背后的故事与商机
+            </div>
+        </div>
+
+        <!-- 底部：信息存根 -->
+        <div class="footer-card">
+            <!-- 营业时间 -->
+            <div class="time-row">
+                <span>节前截止</span><span class="highlight">02月14日</span>
+                <span style="font-size: 0.8rem; opacity: 0.7;">(腊月廿七)</span>
+            </div>
+            <div class="time-row">
+                <span>春节营业</span><span class="highlight">初三 至 十五</span>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="contact-info">
+                <div class="contact-row">📍 地址：沙县农校边</div>
+                <div class="contact-row" style="font-size: 0.8rem; opacity: 0.6;">(导航搜索“卤筷乐”即可到店)</div>
+                <div class="contact-row big">180-5026-3523</div>
+                <div class="contact-row" style="font-size: 0.8rem;">(微信同号)</div>
+            </div>
+            
+            <!-- 装饰印章 -->
+            <div class="seal">诚邀</div>
+        </div>
+    </div>
+
+</body>
+</html>
